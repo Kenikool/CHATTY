@@ -1,8 +1,13 @@
+import Sidebar from "../components/Sidebar";
+
 const HomePage = () => {
   return (
-    <div>
+    <div className="mt-16">
       <h1>Home Page</h1>
-      <div>lorem1000</div>
+      <div className="flex">
+        <Sidebar />
+        <div>lorem1000</div>
+      </div>
     </div>
   );
 };
