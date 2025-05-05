@@ -11,30 +11,35 @@ const io = new Server(server, {
   },
 });
 
-/* export function getReceiverSocketId(userId) {
-  return userSocketMap[userId];
-}
+// export function getReceiverSocketId(userId) {
+//   return userSocketMap[userId];
+// }
 
-// used to store online users
+// // used to store online users
 const userSocketMap = {}; // {userId: socketId}
 
-// listening to events connect
- */
+// // listening to events connect
+
 // connecting to the socket
 io.on("connection", (socket) => {
   console.log("A user connected", socket.id);
 
-  /* const userId = socket.handshake.query.userId;
+  // if user is logged in
+  const userId = socket.handshake.query.userId;
+  // if user is logged in then add to the userSocketMap
   if (userId) userSocketMap[userId] = socket.id;
 
+  // this broadcast is used to send events to all the connected clients
   // io.emit() is used to send events to all the connected clients
+  // getonlineUsers(); is the event name
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
- */
   // disconnecting from the socket
   socket.on("disconnect", () => {
     console.log("A user disconnected", socket.id);
-    // delete userSocketMap[userId];
-    // io.emit("getOnlineUsers", Object.keys(userSocketMap));
+    // when a user is disconnected then remove from the userSocketMap
+    delete userSocketMap[userId];
+    // emit the getOnlineUsers event to all the connected clients to know which users are online or this guy is offline
+    io.emit("getOnlineUsers", Object.keys(userSocketMap));
   });
 });
 
